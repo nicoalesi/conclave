@@ -1,6 +1,14 @@
 public class Main {
     public static void main(String[] args) {
-        Window window = new Window("Conclave", 600, 400);
-        window.open();
+        try {
+            Window window = new Window("Conclave", 600, 400);
+            Conclave conclave = new Conclave(12, "assets/cardinals.csv");
+
+            window.open();
+            conclave.spawnCardinals();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            System.exit(1);
+        }
     }
 }
