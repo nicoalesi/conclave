@@ -5,7 +5,9 @@ public class Main {
             Conclave conclave = new Conclave(12, "assets/cardinals.csv");
 
             window.open();
-            conclave.spawnCardinals();
+            conclave.start();
+            Thread.sleep(100000);
+            conclave.interrupt();
         } catch (Exception e) {
             System.out.println(e.getMessage());
             System.exit(1);
