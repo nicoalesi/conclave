@@ -14,7 +14,8 @@ public class Cardinal extends Thread {
         int y;
 
         public Position() {
-            setRandom();
+            x = -1;
+            y = -1;
         }
 
         public Position(int x, int y) {
@@ -24,14 +25,12 @@ public class Cardinal extends Thread {
         void setPosition(int x, int y) {
             this.x = x;
             this.y = y;
-
-            updateBoardPosition();
         }
 
         void setRandom() {
             setPosition(
-                    (new Random()).nextInt(Board.size),
-                    (new Random()).nextInt(Board.size)
+                (new Random()).nextInt(Board.size),
+                (new Random()).nextInt(Board.size)
             );
         }
 
@@ -76,16 +75,12 @@ public class Cardinal extends Thread {
             updateBoardPosition();
         }
 
-        void updateBoardPosition() {
-            synchronized (Conclave.board.squares[x][y]) {
-                Conclave.board.squares[x][y].residents.add(Cardinal.this);
-            }
+        synchronized void updateBoardPosition() {
+            Conclave.board.squares[y][x].residents.add(Cardinal.this);
         }
 
-        void cancelBoardPosition() {
-            synchronized (Conclave.board.squares[x][y]) {
-                Conclave.board.squares[x][y].residents.remove(Cardinal.this);
-            }
+        synchronized void cancelBoardPosition() {
+            Conclave.board.squares[y][x].residents.remove(Cardinal.this);
         }
     }
 
@@ -102,13 +97,12 @@ public class Cardinal extends Thread {
     public synchronized void run() {
         try {
             position.setRandom();
-            System.out.println(position.x + " " + position.y + " " + name + " " + surname);
             while (!interrupted()) {
-                if (Conclave.board.squares[position.x][position.y].residents.size() < 2) {
+                if (Conclave.board.squares[position.y][position.x].residents.size() < 2) {
                     sleep((new Random()).nextInt(500, 2000));
                 } else {
-                    synchronized (Conclave.board.squares[position.x][position.y]) {
-                        cardinalsToTalkTo = new ArrayList<>(Conclave.board.squares[position.x][position.y].residents);
+                    synchronized (Conclave.board.squares[position.y][position.x]) {
+                        cardinalsToTalkTo = new ArrayList<>(Conclave.board.squares[position.y][position.x].residents);
                     }
                     cardinalsToTalkTo.remove(this);
 
@@ -116,18 +110,17 @@ public class Cardinal extends Thread {
                 }
 
                 for (Cardinal cardinal : cardinalsToTalkTo) {
-                    // System.out.print(cardinal + " ");
                     cardinal.cardinalsToListenTo.add(this);
                 }
-                // System.out.println("\n\n\n");
 
                 while (!cardinalsToTalkTo.isEmpty()) {
-                    System.out.println("|" + name + "," + surname + "is waiting");
-                    for (Cardinal cardinal : cardinalsToTalkTo) {
-                        System.out.print("|" + cardinal.name + "," + cardinal.surname + " ");
-                    }
-                    System.out.println("\n\n");
                     wait();
+                }
+
+                if (cardinalsToListenTo.size() > 20) {
+                    for (Cardinal cardinal : cardinalsToListenTo) {
+                        cardinal.cardinalsToTalkTo.remove(this);
+                    }
                 }
 
                 while (!cardinalsToListenTo.isEmpty()) {
@@ -135,10 +128,7 @@ public class Cardinal extends Thread {
                     cardinalsToListenTo.remove(0);
                 }
 
-                // System.out.println(position.x + " " + position.y + " " + name + " " + surname);
-
-                synchronized (System.out)
-                {
+                synchronized (System.out) {
                     for (Square[] row : Conclave.board.squares) {
                         for (Square square : row) {
                             System.out.print(square.residents.size() + " ");

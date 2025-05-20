@@ -20,7 +20,7 @@ public class Conclave extends Thread {
             try {
                 spawnCardinals();
 
-                sleep(100000);
+                sleep(100_000);
                 for (Cardinal cardinal : cardinals) {
                     cardinal.interrupt();
                 }
@@ -30,16 +30,6 @@ public class Conclave extends Thread {
                 }
 
                 System.out.println("ALL DONE");
-
-//                for (Square[] row : board.squares) {
-//                    for (Square square : row) {
-//                        for (Cardinal cardinal : square.residents) {
-//                            System.out.print(cardinal.name + cardinal.surname);
-//                        }
-//                        System.out.println();
-//                    }
-//                }
-
                 break;
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
@@ -49,7 +39,7 @@ public class Conclave extends Thread {
 
     // Create room's board
     void setBoard(int side) {
-        if (side < 12) {
+        if (side < 2) {
             throw new IllegalArgumentException("Board size not allowed.");
         }
 
