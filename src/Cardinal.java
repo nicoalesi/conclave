@@ -12,11 +12,12 @@ public class Cardinal extends Thread {
     // ArrayList<Cardinal> cardinalsToTalkTo;
     int cardinalsToTalkTo;
     ArrayList<Cardinal> cardinalsToListenTo;
-    Opinion[] encounteredOpinions;
+    int[] encounteredOpinions;
     int receivedMessage;
     int sentMessage;
     boolean available;
     Heap currentOpinion;
+    boolean firstIteration = true;
 
     public class Position {
         int x;
@@ -107,7 +108,6 @@ public class Cardinal extends Thread {
         this.cardinalsToTalkTo = 0;
         this.id = cardinals.size();
         cardinals.add(this);
-        encounteredOpinions = new Opinion[Conclave.cardinals.size()];
         
         cardinalsToListenTo = new ArrayList<>();
     }
@@ -122,7 +122,24 @@ public class Cardinal extends Thread {
     }
 
     public void run() {
+        
         try {
+
+            if (!firstIteration) {
+                System.out.println(name + " " + surname + " is despawning");
+                position.cancelBoardPosition();
+            } else {
+
+                encounteredOpinions = new int[Conclave.cardinals.size()];
+                for (int i = 0; i < encounteredOpinions.length; i++) {
+                    encounteredOpinions[i] = -1;
+                }
+                encounteredOpinions[id] = new Random().nextInt(Conclave.cardinals.size());
+                currentOpinion = new Heap(Conclave.cardinals.size());
+                currentOpinion.add(encounteredOpinions[id], influence);
+                firstIteration = false;
+        
+            }
 
             position.setRandom();
 
@@ -158,7 +175,7 @@ public class Cardinal extends Thread {
                 if (cardinalsToTalkTo == 0) {
 
                     synchronized (this) {
-                        wait((new Random()).nextInt(500, 2000));
+                        wait((new Random()).nextInt(250, 750));
                     }
                 }
 
@@ -215,14 +232,65 @@ public class Cardinal extends Thread {
             }
 
         } catch (InterruptedException e) {
-            System.out.println(name + "done");
+
+            System.out.println(name + " done");
+
+            synchronized (Conclave.votes) {
+
+                Conclave.votes[currentOpinion.getTop().id]++;
+
+            }
+            
         }
     }
 
     synchronized void exchangeInformation(Cardinal caller) {
 
-        if (caller == null) {
+       /*  if (caller == null) {
             boolean passive = true;
+        } */
+
+        int threshold = (int) Math.floor(this.influence / (caller.influence + this.influence) * 100);
+
+        if (new Random().nextInt(100) <= threshold) { // if caller wins
+
+            System.out.println("A");
+            receivedMessage = caller.currentOpinion.getTop().id;
+
+            if (encounteredOpinions[caller.id] != receivedMessage) {
+                
+                int tempID = encounteredOpinions[caller.id];
+                encounteredOpinions[caller.id] = receivedMessage;
+
+                if (tempID != -1) {
+
+                    currentOpinion.add(tempID, (currentOpinion.remove(tempID).value - caller.influence));
+                }
+
+                currentOpinion.add(receivedMessage, currentOpinion.remove(receivedMessage).value + caller.influence);
+
+            }
+
+        } else { // if called wins
+
+            System.out.println("B");
+            sentMessage = currentOpinion.getTop().id;
+            
+            if (caller.encounteredOpinions[id] != sentMessage) {
+
+                int tempID = caller.encounteredOpinions[id];
+                caller.encounteredOpinions[id] = sentMessage;
+                
+
+                if (tempID != -1) {
+                    
+                    caller.currentOpinion.add(tempID, caller.currentOpinion.remove(tempID).value - influence);
+
+                }
+
+                caller.currentOpinion.add(sentMessage, caller.currentOpinion.remove(sentMessage).value + influence);
+
+            }
         }
         
         System.out.println("AAAA");

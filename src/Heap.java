@@ -6,7 +6,7 @@ public class Heap {
     final int SIZE;
 
     public Heap(int size) {
-        
+
         this.SIZE = size;
         this.array = new Opinion[size];
         this.positions = new int[size];
@@ -42,7 +42,7 @@ public class Heap {
         
         if (target >= 0 && array[index].value > array[target].value) {
 
-            System.out.println("Heapifying up " + array[index] + " in position " + positions[array[index].id] + " with parent " + array[target] + " in position " + positions[array[target].id]);
+            // System.out.println("Heapifying up " + array[index] + " in position " + positions[array[index].id] + " with parent " + array[target] + " in position " + positions[array[target].id]);
 
             Opinion temp = array[index];
             array[index] = array[target];
@@ -50,7 +50,7 @@ public class Heap {
             positions[array[index].id] = index;
             positions[array[target].id] = target;
 
-            System.out.println("Swapped " + array[index] + " in position " + positions[array[index].id] + " with child " + array[target] + " in position " + positions[array[target].id]);
+            // System.out.println("Swapped " + array[index] + " in position " + positions[array[index].id] + " with child " + array[target] + " in position " + positions[array[target].id]);
 
             heapifyUp(target);
         }
@@ -72,12 +72,12 @@ public class Heap {
 
         } else {
             target = (array[left].value > array[right].value) ? left : right;
-            System.out.println(target);
+            // System.out.println(target);
         }
 
         if (target != -1 && array[index].value < array[target].value) {
 
-            System.out.println("Heapifying down " + array[index] + " in position " + positions[array[index].id] + " with child " + array[target] + " in position " + positions[array[target].id]);
+            // System.out.println("Heapifying down " + array[index] + " in position " + positions[array[index].id] + " with child " + array[target] + " in position " + positions[array[target].id]);
 
             Opinion temp = array[index];
             array[index] = array[target];
@@ -85,8 +85,8 @@ public class Heap {
             positions[array[index].id] = index;
             positions[array[target].id] = target;
 
-            System.out.println("Swapped " + array[index] + " in position " + positions[array[index].id] + " with parent " + array[target] + " in position " + positions[array[target].id]);
-            System.out.println("next target: " + array[target] + " in position " + target);
+            // System.out.println("Swapped " + array[index] + " in position " + positions[array[index].id] + " with parent " + array[target] + " in position " + positions[array[target].id]);
+            // System.out.println("next target: " + array[target] + " in position " + target);
             heapifyDown(target);
         }
     }
@@ -94,19 +94,24 @@ public class Heap {
     public void add(int id, int value) {
 
         if (positions[id] != -1) {
-            System.out.println("Opinion with id " + id + " already exists. Use remove() to delete it first.");
+            // System.out.println("Opinion with id " + id + " already exists. Use remove() to delete it first.");
             return;
         }
 
         array[elements] = new Opinion(id, value);
         positions[id] = elements++;
-        System.out.println("Adding " + array[elements - 1].id + " with value " + array[elements - 1].value + " in position " + positions[id]);
+        // System.out.println("Adding " + array[elements - 1].id + " with value " + array[elements - 1].value + " in position " + positions[id]);
 
         heapifyUp(elements - 1);
         
     }
 
     public Opinion remove(int id) {
+
+        if (positions[id] == -1) {
+
+            return new Opinion(id, 0);
+        }
 
         Opinion output = array[positions[id]];
         array[positions[id]] = array[--elements];
@@ -115,7 +120,7 @@ public class Heap {
         positions[id] = -1;
         array[elements] = null;
         
-        System.out.println("Removing " + output + " in position " + temp);
+        // System.out.println("Removing " + output + " in position " + temp);
         heapifyDown(temp);
 
         return output;

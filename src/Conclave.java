@@ -6,6 +6,10 @@ import java.util.Random;
 public class Conclave extends Thread {
     static Board board;
     static ArrayList<Cardinal> cardinals;
+    static int[] votes;
+    static int pope;
+    static Object isPopeElected = new Object();
+    static boolean popeElected = false;
 
     public Conclave(int boardSize, String csvPath) throws ConclaveSetupException {
         setBoard(boardSize);
@@ -15,24 +19,58 @@ public class Conclave extends Thread {
     @Override
     public void run() {
 
-        while (true) {
-            try {
-                spawnCardinals();
-                sleep(100000);
-                for (Cardinal cardinal : cardinals) {
-                    while (cardinal.isAlive()) {};
-                }
+        try {           
 
-                System.out.println("ALL DONE");
-                break;
-            } catch (InterruptedException e) {
+            while (true) {
+                
+                spawnCardinals();
+                sleep(20000);
+
+                votes = new int[cardinals.size()];
+                for (int i = 0; i < votes.length; i++) {
+                    votes[i] = 0;
+                }
+                pope = 0;
 
                 for (Cardinal cardinal : cardinals) {
                     cardinal.interrupt();
                 }
+
+                for (Cardinal cardinal : cardinals) {
+                    while (cardinal.isAlive()) {
+                    }
+                }
+
+                for (int i = 0; i < votes.length; i++) {
+                    pope = votes[i] > votes[pope] ? i : pope;
+                }
+
+                // System.out.println("ALL DONE");
+                if (votes[pope] > (int) Math.floor((cardinals.size() / 3)) * 2) {
+
+                    System.out.println("Pope elected: " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) Math.floor((cardinals.size() / 3)) * 2 + ")");
+
+                    synchronized (isPopeElected) {
+                        isPopeElected.notify();
+                    }
+
+                } else {
+
+                    System.out.println("No pope elected. The cardinal with the most votes is " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) Math.floor((cardinals.size() / 3)) * 2 + ")");
+                    System.out.println("The conclave will continue.");
+                }
+
+            }
+
+
+        } catch (InterruptedException e) {
+
+            for (Cardinal cardinal : cardinals) {
+                cardinal.interrupt();
             }
         }
     }
+    
 
     // Create room's board
     void setBoard(int side) {
