@@ -5,7 +5,7 @@ import java.util.Random;
 // Class to manage scrutinies
 public class Conclave extends Thread {
     static Board board;
-    ArrayList<Cardinal> cardinals;
+    static ArrayList<Cardinal> cardinals;
 
     public Conclave(int boardSize, String csvPath) throws ConclaveSetupException {
         setBoard(boardSize);
@@ -14,17 +14,11 @@ public class Conclave extends Thread {
 
     @Override
     public void run() {
-        super.run();
 
         while (true) {
             try {
                 spawnCardinals();
-
-                sleep(100_000);
-                for (Cardinal cardinal : cardinals) {
-                    cardinal.interrupt();
-                }
-
+                sleep(100000);
                 for (Cardinal cardinal : cardinals) {
                     while (cardinal.isAlive()) {};
                 }
@@ -32,7 +26,10 @@ public class Conclave extends Thread {
                 System.out.println("ALL DONE");
                 break;
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+                for (Cardinal cardinal : cardinals) {
+                    cardinal.interrupt();
+                }
             }
         }
     }
