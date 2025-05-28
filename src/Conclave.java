@@ -6,6 +6,7 @@ import java.util.Random;
 public class Conclave extends Thread {
     static Board board;
     static ArrayList<Cardinal> cardinals;
+    static Thread[] threads;
     static int[] votes;
     static int pope;
     static Object isPopeElected = new Object();
@@ -32,12 +33,12 @@ public class Conclave extends Thread {
                 }
                 pope = 0;
 
-                for (Cardinal cardinal : cardinals) {
-                    cardinal.interrupt();
+                for (Thread thread : threads) {
+                    thread.interrupt();
                 }
 
-                for (Cardinal cardinal : cardinals) {
-                    while (cardinal.isAlive()) {
+                for (Thread thread : threads) {
+                    while (thread.isAlive()) {
                     }
                 }
 
@@ -65,8 +66,8 @@ public class Conclave extends Thread {
 
         } catch (InterruptedException e) {
 
-            for (Cardinal cardinal : cardinals) {
-                cardinal.interrupt();
+            for (Thread thread : threads) {
+                thread.interrupt();
             }
         }
     }
@@ -101,6 +102,8 @@ public class Conclave extends Thread {
                     )
                 );
             }
+
+            threads = new Thread[cardinals.size()];
         } catch (FileNotFoundException e) {
             throw new ConclaveSetupException("CSV file path not found.");
         }
@@ -108,7 +111,9 @@ public class Conclave extends Thread {
 
     void spawnCardinals() {
         for (Cardinal cardinal : cardinals) {
-            cardinal.start();
+            Thread newThread = new Thread(cardinal);
+            threads[cardinal.id] = newThread;
+            newThread.start();
         }
     }
 }

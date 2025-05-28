@@ -2,7 +2,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Cardinal extends Thread {
+public class Cardinal implements Runnable {
     String name;
     String surname;
     static ArrayList<Cardinal> cardinals = new ArrayList<>();
