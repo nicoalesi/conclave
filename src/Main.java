@@ -6,8 +6,13 @@ public class Main {
 
             window.open();
             conclave.start();
-            // Thread.sleep(100000);
-            // conclave.interrupt();
+
+            synchronized (Conclave.isPopeElected) {
+                Conclave.isPopeElected.wait();
+            }
+            
+            conclave.interrupt();
+
         } catch (Exception e) {
             System.out.println("A");
             System.out.println(e.getMessage());
