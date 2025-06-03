@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 // Class to manage scrutinies
@@ -25,7 +26,7 @@ public class Conclave extends Thread {
             while (true) {
                 
                 spawnCardinals();
-                sleep(20000);
+                sleep(3000);
 
                 votes = new int[cardinals.size()];
                 for (int i = 0; i < votes.length; i++) {
@@ -42,8 +43,17 @@ public class Conclave extends Thread {
                     }
                 }
 
-                for (int i = 0; i < votes.length; i++) {
-                    pope = votes[i] > votes[pope] ? i : pope;
+
+                synchronized (Main.data) {
+                    for (int i = 0; i < votes.length; i++) {
+                        Main.data.add(new Triplet<>(
+                                cardinals.get(i).name,
+                                cardinals.get(i).surname,
+                                votes[i]
+                                ));
+                        pope = votes[i] > votes[pope] ? i : pope;
+                    }
+                    Main.data.notify();
                 }
 
                 // System.out.println("ALL DONE");

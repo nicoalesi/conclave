@@ -33,12 +33,7 @@ public class ScrollingText extends JTextPane {
     }
 
     void scroll() {
-        Timer timer = new Timer(30, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setLocation(getX(), getY() - 2);
-            }
-        });
+        Timer timer = new Timer(30, e -> setLocation(getX(), getY() - 2));
 
         timer.start();
         repaint();
