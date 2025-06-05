@@ -96,15 +96,13 @@ public class Conclave extends Thread {
 
         try {
             Reader reader = new Reader(csvPath);
-            int i = 0;
             while(reader.hasRow()) {
                 String[] data = reader.getRowData();
                 cardinals.add(
                     new Cardinal(
                         data[0],
                         data[1],
-                        Integer.parseInt(data[2]),
-                            i++
+                        Integer.parseInt(data[2])
                     )
                 );
             }
