@@ -1,4 +1,4 @@
-public class Triplet<E extends String, V extends Integer> implements Comparable<Triplet> {
+public class Triplet<E extends String, V extends Integer> implements Comparable<Triplet<?, V>> {
     E name;
     E surname;
     V votes;

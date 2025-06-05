@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import static java.lang.Thread.sleep;
 
 public class Main {
@@ -8,8 +7,15 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Window window = new Window("Conclave", 600, 400);
-            Conclave conclave = new Conclave(12, "assets/cardinals.csv");
+            Window window = new Window(
+                "Conclave",
+                600,
+                400
+            );
+            Conclave conclave = new Conclave(
+                12,
+                "assets/cardinals.csv"
+            );
 
             window.open();
             window.displayMenu();
