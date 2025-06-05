@@ -13,7 +13,7 @@ public class Cardinal implements Runnable {
     int[] encounteredOpinions;
     int receivedMessage;
     int sentMessage;
-    boolean available;
+    boolean available = false;
     Heap currentOpinion;
     boolean firstIteration = true;
 
@@ -171,6 +171,8 @@ public class Cardinal implements Runnable {
 
                 }
 
+                available = false;
+
                 position.moveRandomly();
 
                 synchronized (System.out) {
@@ -191,16 +193,11 @@ public class Cardinal implements Runnable {
 
         } catch (InterruptedException e) {
 
-            System.out.println(name + " done");
+                synchronized (Conclave.votes) {
 
-            position.cancelBoardPosition();
+                    Conclave.votes[currentOpinion.getTop().id]++;
 
-            synchronized (Conclave.votes) {
-
-                Conclave.votes[currentOpinion.getTop().id]++;
-
-            }
-            
+                }
         }
     }
 
