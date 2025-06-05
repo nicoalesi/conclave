@@ -1,3 +1,5 @@
+package conclave.gui.components;
+
 import javax.swing.*;
 import java.awt.*;
 

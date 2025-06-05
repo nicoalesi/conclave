@@ -1,7 +1,9 @@
+package conclave.util;
+
 public class Triplet<E extends String, V extends Integer> implements Comparable<Triplet<?, V>> {
-    E name;
-    E surname;
-    V votes;
+    public E name;
+    public E surname;
+    public V votes;
 
     public Triplet(E first, E second, V value) {
         name = first;

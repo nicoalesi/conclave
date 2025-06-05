@@ -1,3 +1,8 @@
+package conclave;
+
+import conclave.gui.Window;
+import conclave.util.Triplet;
+
 import java.util.ArrayList;
 import static java.lang.Thread.sleep;
 

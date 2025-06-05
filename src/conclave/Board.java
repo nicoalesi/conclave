@@ -1,3 +1,5 @@
+package conclave;
+
 public class Board {
     static int size;
     Square[][] squares;

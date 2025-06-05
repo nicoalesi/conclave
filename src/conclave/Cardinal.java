@@ -1,4 +1,5 @@
-import java.lang.reflect.Array;
+package conclave;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -9,7 +10,7 @@ public class Cardinal implements Runnable {
     int id;
     int influence;
     Position position;
-    // ArrayList<Cardinal> cardinalsToTalkTo;
+    // ArrayList<conclave.Cardinal> cardinalsToTalkTo;
     int cardinalsToTalkTo;
     ArrayList<Cardinal> cardinalsToListenTo;
     int[] encounteredOpinions;
@@ -158,9 +159,9 @@ public class Cardinal implements Runnable {
                         }
 
 
-                        /* cardinalsToTalkTo = new ArrayList<>(Conclave.board.squares[position.y][position.x].residents);
+                        /* cardinalsToTalkTo = new ArrayList<>(conclave.Conclave.board.squares[position.y][position.x].residents);
                         cardinalsToTalkTo.remove(this);
-                        for (Cardinal cardinal : cardinalsToTalkTo) {
+                        for (conclave.Cardinal cardinal : cardinalsToTalkTo) {
                             synchronized (cardinal.cardinalsToListenTo) {
                                 cardinal.cardinalsToListenTo.add(this);
                             }
@@ -189,7 +190,7 @@ public class Cardinal implements Runnable {
 
 
                 /* if (cardinalsToListenTo.size() > 20) {
-                    for (Cardinal cardinal : cardinalsToListenTo) {
+                    for (conclave.Cardinal cardinal : cardinalsToListenTo) {
                         cardinal.cardinalsToTalkTo.remove(this);
                     }
                 } */

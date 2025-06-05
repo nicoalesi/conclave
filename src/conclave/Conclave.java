@@ -1,3 +1,7 @@
+package conclave;
+
+import conclave.util.Triplet;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -80,7 +84,7 @@ public class Conclave extends Thread {
     // Create room's board
     void setBoard(int side) {
         if (side < 2) {
-            throw new IllegalArgumentException("Board size not allowed.");
+            throw new IllegalArgumentException("conclave.Board size not allowed.");
         }
 
         board = new Board(side);

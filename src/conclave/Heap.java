@@ -1,3 +1,5 @@
+package conclave;
+
 public class Heap {
 
     int[] positions;
@@ -117,7 +119,7 @@ public class Heap {
 
     public void printHeap() {
 
-        System.out.print("Heap: ");
+        System.out.print("conclave.Heap: ");
         for (int i = 0; i < SIZE; i++) {
             System.out.print(array[i] + " ");
         }

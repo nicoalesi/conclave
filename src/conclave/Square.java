@@ -1,3 +1,5 @@
+package conclave;
+
 import java.util.ArrayList;
 
 public class Square {

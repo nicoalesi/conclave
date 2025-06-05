@@ -1,4 +1,6 @@
-    public class Opinion {
+package conclave;
+
+public class Opinion {
         int id;
         int value;
 

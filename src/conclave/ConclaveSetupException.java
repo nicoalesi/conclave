@@ -1,3 +1,5 @@
+package conclave;
+
 public class ConclaveSetupException extends Exception {
     public ConclaveSetupException() {
         super();
