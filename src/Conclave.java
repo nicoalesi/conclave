@@ -20,11 +20,19 @@ public class Conclave extends Thread {
 
     @Override
     public void run() {
+        boolean a = false;
 
         try {           
 
             while (true) {
-                
+
+//                if (a) {
+//                    for (Cardinal c : cardinals) {
+//                        c.position.cancelBoardPosition();
+//                    }
+//                }
+
+                a = true;
                 spawnCardinals();
                 sleep(3000);
 
@@ -60,10 +68,7 @@ public class Conclave extends Thread {
                 if (votes[pope] > (int) Math.floor((cardinals.size() / 3)) * 2) {
 
                     System.out.println("Pope elected: " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) Math.floor((cardinals.size() / 3)) * 2 + ")");
-
-                    synchronized (isPopeElected) {
-                        isPopeElected.notify();
-                    }
+                    break;
 
                 } else {
 
@@ -120,8 +125,13 @@ public class Conclave extends Thread {
     }
 
     void spawnCardinals() {
+        int count = 0;
         for (Cardinal cardinal : cardinals) {
             Thread newThread = new Thread(cardinal);
+            count++;
+            synchronized (System.out) {
+                System.out.println("REAL COUNT: " + count);
+            }
             threads[cardinal.id] = newThread;
             newThread.start();
         }

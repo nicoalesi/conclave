@@ -1,7 +1,4 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Timer;
 
 import static java.lang.Thread.sleep;
 
@@ -21,7 +18,6 @@ public class Main {
                 menu.wait();
             }
 
-            System.out.println("jkwbadhvbdhagwd");
             window.writeMass();
 
             sleep(12000);

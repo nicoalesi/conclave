@@ -127,7 +127,7 @@ public class Cardinal implements Runnable {
 
             if (!firstIteration) {
                 System.out.println(name + " " + surname + " is despawning");
-                position.cancelBoardPosition();
+                // position.cancelBoardPosition();
             } else {
 
                 encounteredOpinions = new int[Conclave.cardinals.size()];
@@ -225,6 +225,7 @@ public class Cardinal implements Runnable {
                         System.out.println();
                     }
                     System.out.println(count);
+                    System.out.println(Conclave.cardinals.size());
                     System.out.println();
                 }
 
@@ -234,6 +235,8 @@ public class Cardinal implements Runnable {
         } catch (InterruptedException e) {
 
             System.out.println(name + " done");
+
+            position.cancelBoardPosition();
 
             synchronized (Conclave.votes) {
 
