@@ -4,6 +4,7 @@ import conclave.util.Triplet;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 // Class to manage scrutinies
 public class Conclave extends Thread {
@@ -20,21 +21,15 @@ public class Conclave extends Thread {
 
     @Override
     public void run() {
-        boolean a = false;
 
-        try {           
+        try {
 
+            pope = 0;
             while (true) {
 
-                a = true;
                 spawnCardinals();
+                Arrays.fill(votes, 0);
                 sleep(3000);
-
-                votes = new int[cardinals.size()];
-                for (int i = 0; i < votes.length; i++) {
-                    votes[i] = 0;
-                }
-                pope = 0;
 
                 for (Thread thread : threads) {
                     thread.interrupt();
@@ -44,7 +39,6 @@ public class Conclave extends Thread {
                     while (thread.isAlive()) {
                     }
                 }
-
 
                 synchronized (Main.data) {
                     for (int i = 0; i < votes.length; i++) {
@@ -58,14 +52,14 @@ public class Conclave extends Thread {
                     Main.data.notify();
                 }
 
-                if (votes[pope] > (int) Math.floor((cardinals.size() / 3)) * 2) {
+                if (votes[pope] > (int) ((cardinals.size() / 3)) * 2) {
 
-                    System.out.println("Pope elected: " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) Math.floor((cardinals.size() / 3)) * 2 + ")");
+                    System.out.println("Pope elected: " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) ((cardinals.size() / 3)) * 2 + ")");
                     break;
 
                 } else {
 
-                    System.out.println("No pope elected. The cardinal with the most votes is " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) Math.floor((cardinals.size() / 3)) * 2 + ")");
+                    System.out.println("No pope elected. The cardinal with the most votes is " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) ((cardinals.size() / 3)) * 2 + ")");
                     System.out.println("The conclave will continue.");
                 }
 
@@ -99,6 +93,7 @@ public class Conclave extends Thread {
         cardinals = new ArrayList<>();
 
         try {
+            int i = 0;
             Reader reader = new Reader(csvPath);
             while(reader.hasRow()) {
                 String[] data = reader.getRowData();
@@ -106,7 +101,8 @@ public class Conclave extends Thread {
                     new Cardinal(
                         data[0],
                         data[1],
-                        Integer.parseInt(data[2])
+                        Integer.parseInt(data[2]),
+                            i++
                     )
                 );
             }
@@ -115,6 +111,7 @@ public class Conclave extends Thread {
         } catch (FileNotFoundException e) {
             throw new ConclaveSetupException("CSV file path not found.");
         }
+        votes = new int[cardinals.size()];
     }
 
     void spawnCardinals() {
