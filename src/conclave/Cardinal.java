@@ -156,10 +156,10 @@ public class Cardinal implements Runnable {
                 }
 
                 while (!cardinalsToListenTo.isEmpty()) {
-                    Cardinal target = cardinalsToListenTo.getFirst();
+                    Cardinal target = cardinalsToListenTo.get(0);
                     if (target.cardinalsToTalkTo > 0) {
                         target.exchangeInformation(this);
-                        cardinalsToListenTo.removeFirst();
+                        cardinalsToListenTo.remove(target);
                     }
 
                 }
