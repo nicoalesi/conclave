@@ -2,6 +2,7 @@ package conclave;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Arrays;
 
 public class Cardinal implements Runnable {
     String name;
@@ -25,10 +26,6 @@ public class Cardinal implements Runnable {
         public Position() {
             x = -1;
             y = -1;
-        }
-
-        public Position(int x, int y) {
-            setPosition(x, y);
         }
 
         void setPosition(int x, int y) {
@@ -103,10 +100,8 @@ public class Cardinal implements Runnable {
         this.surname = surname;
         this.influence = influence;
         this.position = new Position();
-        // cardinalsToTalkTo = new ArrayList<>();
         this.cardinalsToTalkTo = 0;
         this.id = id;
-
         cardinalsToListenTo = new ArrayList<>();
     }
 
@@ -114,22 +109,17 @@ public class Cardinal implements Runnable {
 
         try {
 
-            if (!firstIteration) {
-                System.out.println(name + " " + surname + " is despawning");
-                // position.cancelBoardPosition();
-            } else {
-
+            if (firstIteration) {
                 encounteredOpinions = new int[Conclave.cardinals.size()];
-                for (int i = 0; i < encounteredOpinions.length; i++) {
-                    encounteredOpinions[i] = -1;
-                }
+                Arrays.fill(encounteredOpinions, -1);
                 encounteredOpinions[id] = new Random().nextInt(Conclave.cardinals.size());
                 currentOpinion = new Heap(Conclave.cardinals.size());
                 currentOpinion.add(encounteredOpinions[id], influence);
                 firstIteration = false;
 
             }
-
+            cardinalsToListenTo.clear();
+            cardinalsToTalkTo = 0;
             position.setRandom();
 
             while (true) {
@@ -146,21 +136,11 @@ public class Cardinal implements Runnable {
 
                         }
 
-
-                        /* cardinalsToTalkTo = new ArrayList<>(conclave.Conclave.board.squares[position.y][position.x].residents);
-                        cardinalsToTalkTo.remove(this);
-                        for (conclave.Cardinal cardinal : cardinalsToTalkTo) {
-                            synchronized (cardinal.cardinalsToListenTo) {
-                                cardinal.cardinalsToListenTo.add(this);
-                            }
-                        } */
-
                     }
                     available = true;
 
                 }
 
-                // if (cardinalsToTalkTo.size() == 0) {
                 if (cardinalsToTalkTo == 0) {
 
                     synchronized (this) {
@@ -168,7 +148,6 @@ public class Cardinal implements Runnable {
                     }
                 }
 
-                // while (!cardinalsToTalkTo.isEmpty()) {
                 synchronized (this) {
                     while (cardinalsToTalkTo > 0) {
                         wait();
@@ -176,27 +155,11 @@ public class Cardinal implements Runnable {
 
                 }
 
-
-                /* if (cardinalsToListenTo.size() > 20) {
-                    for (conclave.Cardinal cardinal : cardinalsToListenTo) {
-                        cardinal.cardinalsToTalkTo.remove(this);
-                    }
-                } */
-
                 while (!cardinalsToListenTo.isEmpty()) {
-                    Cardinal target = cardinalsToListenTo.get(0);
+                    Cardinal target = cardinalsToListenTo.getFirst();
                     if (target.cardinalsToTalkTo > 0) {
-
-                        // sentMessage = currentOpinion.getTop().id;
-                        // target.receivedMessage = sentMessage;
-
                         target.exchangeInformation(this);
-                        cardinalsToListenTo.remove(0);
-                        synchronized (Conclave.board.squares[position.y][position.x]) {
-                            if (cardinalsToListenTo.isEmpty())
-                                available = false;
-                        }
-
+                        cardinalsToListenTo.removeFirst();
                     }
 
                 }
@@ -214,7 +177,6 @@ public class Cardinal implements Runnable {
                         System.out.println();
                     }
                     System.out.println(count);
-                    System.out.println(Conclave.cardinals.size());
                     System.out.println();
                 }
 
@@ -238,15 +200,10 @@ public class Cardinal implements Runnable {
 
     synchronized void exchangeInformation(Cardinal caller) {
 
-       /*  if (caller == null) {
-            boolean passive = true;
-        } */
-
-        int threshold = (int) Math.floor(this.influence / (caller.influence + this.influence) * 100);
+        int threshold = this.influence / (caller.influence + this.influence) * 100;
 
         if (new Random().nextInt(100) <= threshold) { // if caller wins
 
-            System.out.println("A");
             receivedMessage = caller.currentOpinion.getTop().id;
 
             if (encounteredOpinions[caller.id] != receivedMessage) {
@@ -265,7 +222,6 @@ public class Cardinal implements Runnable {
 
         } else { // if called wins
 
-            System.out.println("B");
             sentMessage = currentOpinion.getTop().id;
 
             if (caller.encounteredOpinions[id] != sentMessage) {
@@ -284,8 +240,6 @@ public class Cardinal implements Runnable {
 
             }
         }
-
-        System.out.println("AAAA");
 
         cardinalsToTalkTo--;
         notify();
