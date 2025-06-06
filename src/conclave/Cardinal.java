@@ -6,11 +6,9 @@ import java.util.Random;
 public class Cardinal implements Runnable {
     String name;
     String surname;
-    static ArrayList<Cardinal> cardinals = new ArrayList<>();
     int id;
     int influence;
     Position position;
-    // ArrayList<conclave.Cardinal> cardinalsToTalkTo;
     int cardinalsToTalkTo;
     ArrayList<Cardinal> cardinalsToListenTo;
     int[] encounteredOpinions;
@@ -100,26 +98,16 @@ public class Cardinal implements Runnable {
     }
 
 
-    public Cardinal(String name, String surname, int influence) {
+    public Cardinal(String name, String surname, int influence, int id) {
         this.name = name;
         this.surname = surname;
         this.influence = influence;
         this.position = new Position();
         // cardinalsToTalkTo = new ArrayList<>();
         this.cardinalsToTalkTo = 0;
-        this.id = cardinals.size();
-        cardinals.add(this);
+        this.id = id;
 
         cardinalsToListenTo = new ArrayList<>();
-    }
-
-    public static Cardinal getCardinalByID(int id) {
-        for (Cardinal cardinal : cardinals) {
-            if (cardinal.id == id) {
-                return cardinal;
-            }
-        }
-        return null;
     }
 
     public void run() {
