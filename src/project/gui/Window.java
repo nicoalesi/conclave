@@ -1,7 +1,7 @@
-package conclave.gui;
+package project.gui;
 
-import conclave.gui.components.*;
-import conclave.util.Triplet;
+import project.gui.components.*;
+import project.util.Triplet;
 
 import javax.swing.*;
 import java.util.ArrayList;

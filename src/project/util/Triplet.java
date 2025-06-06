@@ -1,4 +1,4 @@
-package conclave.util;
+package project.util;
 
 public class Triplet<E extends String, V extends Integer> implements Comparable<Triplet<?, V>> {
     public E name;

@@ -1,17 +1,15 @@
-package conclave;
+package project.conclave;
 
 public class Opinion {
-        int id;
-        int value;
+        public int id;
+        public int value;
 
-        Opinion(int id, int value) {
+        public Opinion(int id, int value) {
             this.id = id;
             this.value = value;
         }
 
         public String toString() {
-
             return "(id: " + id + ", value: " + value + ") ";
-
         }
     }

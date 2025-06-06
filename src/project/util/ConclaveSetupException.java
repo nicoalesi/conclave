@@ -1,4 +1,4 @@
-package conclave;
+package project.util;
 
 public class ConclaveSetupException extends Exception {
     public ConclaveSetupException() {

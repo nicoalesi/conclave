@@ -1,6 +1,9 @@
-package conclave;
+package project.conclave;
 
-import conclave.util.Triplet;
+import project.Main;
+import project.util.ConclaveSetupException;
+import project.util.Reader;
+import project.util.Triplet;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;

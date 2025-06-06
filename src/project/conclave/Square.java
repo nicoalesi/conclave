@@ -1,4 +1,4 @@
-package conclave;
+package project.conclave;
 
 import java.util.ArrayList;
 

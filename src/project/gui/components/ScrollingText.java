@@ -1,4 +1,4 @@
-package conclave.gui.components;
+package project.gui.components;
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;

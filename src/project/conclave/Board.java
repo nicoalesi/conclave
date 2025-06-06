@@ -1,4 +1,4 @@
-package conclave;
+package project.conclave;
 
 public class Board {
     static int size;

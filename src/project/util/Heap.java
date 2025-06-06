@@ -1,4 +1,6 @@
-package conclave;
+package project.util;
+
+import project.conclave.Opinion;
 
 public class Heap {
 
@@ -19,7 +21,7 @@ public class Heap {
     }
 
     private int parent(int index) {
-        return (int) Math.floor((index + 1) / 2) - 1;
+        return ((index + 1) / 2) - 1;
     }
 
     private int left(int index) {
