@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import static java.lang.Thread.sleep;
 
 public class Main {
-    public static ArrayList<Triplet<String, Integer>> data = new ArrayList<>();
+    public static final ArrayList<Triplet<String, Integer>> data = new ArrayList<>();
     public static final Object menu = new Object();
+    public static String pope = "";
 
     public static void main(String[] args) {
         try {
@@ -35,20 +36,19 @@ public class Main {
             sleep(12000);
             conclave.start();
 
-            while (true) {
+            while (pope.isBlank()) {
                 synchronized (data) {
                     data.wait();
-
-                    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
                     window.displayVotes(data);
-                    // System.out.println(data.get(0));
                     data.clear();
                 }
             }
+
+            window.displayPope();
+            System.out.println(pope);
             // conclave.interrupt();
 
         } catch (Exception e) {
-            System.out.println("A");
             System.out.println(e.getMessage());
             System.exit(1);
         }

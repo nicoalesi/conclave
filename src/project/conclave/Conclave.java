@@ -55,8 +55,8 @@ public class Conclave extends Thread {
                     Main.data.notify();
                 }
 
-                if (votes[pope] > (int) ((cardinals.size() / 3)) * 2) {
-
+                if (votes[pope] >= ((cardinals.size() / 3)) * 2) {
+                    Main.pope = cardinals.get(pope).name + " " + cardinals.get(pope).surname;
                     System.out.println("Pope elected: " + cardinals.get(pope).name + " " + cardinals.get(pope).surname + " with " + votes[pope] + " votes. (target: " + (int) ((cardinals.size() / 3)) * 2 + ")");
                     break;
 
@@ -102,8 +102,8 @@ public class Conclave extends Thread {
                 String[] data = reader.getRowData();
                 cardinals.add(
                     new Cardinal(
-                        data[0],
                         data[1],
+                        data[0],
                         Integer.parseInt(data[2]),
                             i++
                     )

@@ -1,5 +1,6 @@
 package project.gui;
 
+import project.Main;
 import project.gui.components.*;
 import project.util.Triplet;
 
@@ -24,6 +25,19 @@ public class Window {
 
     public void open() {
         frame.setVisible(true);
+    }
+
+    public void displayPope() {
+        frame.getContentPane().removeAll();
+
+        Title title = new Title("Habemus Papam", 32, true);
+        title.setLocation(162, 20);
+        PopeLabel popeLabel = new PopeLabel(Main.pope, 20);
+
+
+        frame.add(title);
+        frame.add(popeLabel);
+        frame.repaint();
     }
 
     public void displayMenu() {
