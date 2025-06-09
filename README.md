@@ -6,3 +6,5 @@ This project was developed as the final assignment for the [Programming 2](https
 
 ## 🧑‍💻 Project description
 The papal conclave is a centuries‑old procedure characterised by secrecy, debate and successive ballots. Modelling such a social process in software offers a sandbox for experimenting with collective decision making, graph diffusion and multithreaded coordination. The project was produced as an academic exercise and is composed of roughly 1 500 lines of Java code.  A front‑end built with Swing presents the Latin mass, a start menu, live vote counts and finally the elected pope; the back‑end runs the stochastic simulation. 
+
+Further information can be found in the PDF report, named as "The Conclave".
