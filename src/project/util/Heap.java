@@ -1,7 +1,5 @@
 package project.util;
 
-import project.conclave.Opinion;
-
 public class Heap {
 
     int[] positions;

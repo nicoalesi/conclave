@@ -80,7 +80,7 @@ public class Conclave extends Thread {
 
     // Create room's board
     void setBoard(int side) {
-        if (side < 2) {
+        if (side < 12) {
             throw new IllegalArgumentException("conclave.Board size not allowed.");
         }
 

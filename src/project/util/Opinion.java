@@ -1,4 +1,4 @@
-package project.conclave;
+package project.util;
 
 public class Opinion {
         public int id;
